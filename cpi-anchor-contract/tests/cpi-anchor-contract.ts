@@ -28,4 +28,20 @@ describe("cpi-anchor-contract", () => {
       .connection.getAccountInfo(recipient.publicKey);
     assert.equal((await account).lamports, 1000000000);
   });
+
+  it("Is Sol Transfer by generic way!", async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .solTransferGeneric(new anchor.BN(1000000000))
+      .accounts({
+        sender2: anchor.getProvider().wallet.publicKey,
+        recipient2: recipient.publicKey,
+      })
+      .rpc();
+    console.log("Your transaction signature", tx);
+    const account = anchor
+      .getProvider()
+      .connection.getAccountInfo(recipient.publicKey);
+    assert.equal((await account).lamports, 2000000000);
+  });
 });
